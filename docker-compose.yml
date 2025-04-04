@@ -1,0 +1,43 @@
+services:
+  frontend:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    environment:
+      - VITE_API_URL=${VITE_API_URL}
+      - VITE_APP_TITLE=${VITE_APP_TITLE}
+    env_file:
+      - ./app/.env
+    networks:
+      - pga-network
+    depends_on:
+      - api
+    restart: always
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    environment:
+      - PORT=${PORT}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRATION=${JWT_EXPIRATION}
+      - DATABASE_URL=${DATABASE_URL}
+      - SALT_ROUNDS=${SALT_ROUNDS}
+    env_file:
+      - ./api/.env
+    networks:
+      - pga-network
+    volumes:
+      - ./api/prisma:/api/prisma
+
+    restart: always
+
+volumes:
+  database:
+
+networks:
+  pga-network:
+    driver: bridge

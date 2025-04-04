@@ -1,0 +1,39 @@
+{
+  "autorun": false,
+  "autokill": true,
+  "terminals": [
+    {
+      "name": "APP",
+      "description": "Run the app",
+      "icon": "code",
+      "color": "terminal.ansiCyan",
+      "cwd": "./",
+      "command": "cd app && npm run dev"
+    },
+    {
+      "name": "API",
+      "description": "Run the API",
+      "icon": "database",
+      "color": "terminal.ansiGreen",
+      "cwd": "./",
+      "command": "cd api && npm run dev"
+    },
+    {
+      "name": "Prisma",
+      "description": "Run the Prisma Studio",
+      "icon": "server",
+      "color": "terminal.ansiMagenta",
+      "cwd": "./",
+      "command": "cd api && npm run prisma:studio"
+    },
+    {
+      "name": "Commands",
+      "description": "For running commands",
+      "icon": "terminal",
+      "color": "terminal.ansiYellow",
+      "cwd": "./",
+      "focus": true,
+      "open": true
+    }
+  ]
+}

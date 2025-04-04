@@ -1,0 +1,10 @@
+.git
+*Dockerfile*
+*docker-compose*
+node_modules
+prisma/dev.db
+nodemon.json
+README.md
+dist
+.gitignore
+debug.log
