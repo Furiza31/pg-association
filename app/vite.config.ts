@@ -30,5 +30,11 @@ export default ({ mode }: { mode: string }) => {
         },
       },
     },
+    build: {
+      sourcemap: "inline",
+    },
+    optimizeDeps: {
+      exclude: ["vee-validate"],
+    },
   });
 };

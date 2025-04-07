@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import {
   Sheet,
   SheetContent,
@@ -12,13 +13,21 @@ import {
 import Avatar from "@/components/user/Avatar.vue";
 import { useAuth } from "@/services/auth.service";
 import { useTranslation } from "@/services/translation.service";
-import { LayoutDashboard, LogOut, Menu, Settings } from "lucide-vue-next";
+import { useUserStore } from "@/stores/User";
+import {
+  LayoutDashboard,
+  LogOut,
+  Menu,
+  Settings,
+  Users,
+} from "lucide-vue-next";
 import { ref, watch } from "vue";
 import { RouterLink, useRouter } from "vue-router";
 import { toast } from "vue-sonner";
 
 const { t } = useTranslation();
 const auth = useAuth();
+const userStore = useUserStore();
 const router = useRouter();
 const isOpen = ref(false);
 const onLougout = () => {
@@ -73,6 +82,26 @@ watch(
               <span class="w-5/6 text-center"> {{ t("Home") }} </span>
             </Button>
           </RouterLink>
+          <div
+            v-if="userStore.user.role == 'ADMIN'"
+            class="w-full flex flex-col items-center justify-start gap-2 mt-2"
+          >
+            <Separator :label="t('Administration')" class="my-2 font-bold" />
+            <RouterLink
+              :to="{ name: 'Users_Management' }"
+              exactActiveClass="group active"
+              class="w-full"
+            >
+              <Button
+                class="flex flex-row items-center justify-start w-full px-2 py-1 h-9 bg-secondary-foreground group-[.active]:bg-primary"
+              >
+                <Users class="size-5" />
+                <span class="w-5/6 text-center">
+                  {{ t("Users_Management") }}
+                </span>
+              </Button>
+            </RouterLink>
+          </div>
         </div>
       </div>
       <SheetFooter class="w-full gap-2">
