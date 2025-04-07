@@ -1,6 +1,6 @@
 import { Role } from "@prisma/client";
 import { Response, Router } from "express";
-import { body } from "express-validator";
+import { param } from "express-validator";
 import { AuthService } from "../../services/auth.service";
 import { UserService } from "../../services/user.service";
 import { TypedRequest } from "../../types/express-request-type";
@@ -8,23 +8,18 @@ import { TypedRequest } from "../../types/express-request-type";
 const router = Router();
 
 router.delete(
-  "/user",
-  [body("userId").isNumeric()],
+  "/user/:userId",
+  [param("userId").isInt()],
   AuthService.hasRole({ roles: [Role.ADMIN] }),
-  async (
-    req: TypedRequest<
-      {
-        userId: number;
-      },
-      {}
-    >,
-    res: Response
-  ) => {
-    const { userId, prisma } = req.body;
+  async (req: TypedRequest<{}, { userId: string }>, res: Response) => {
+    const { userId } = req.params;
+    const { prisma } = req.body;
 
     const userService = new UserService(prisma);
     try {
-      const deletedUser = await userService.deleteUser({ id: userId });
+      const deletedUser = await userService.deleteUser({
+        id: parseInt(userId),
+      });
       return res.status(200).json({
         message: "Utilisateur supprimé avec succès",
         data: {

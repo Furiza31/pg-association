@@ -10,37 +10,38 @@ const router = Router();
 router.put(
   "/user",
   [
-    body("username").isString().isLength({ min: 3 }).optional(),
-    body("email").isEmail().optional(),
-    body("language").isString().isLength({ min: 5, max: 5 }).optional(),
-    body("roles").optional().isArray(),
-    body("roles.*").isNumeric(),
+    body("id").isNumeric(),
+    body("username").isString().isLength({ min: 3 }),
+    body("email").isEmail(),
+    body("language").isString().isLength({ min: 5, max: 5 }),
+    body("role").isString().isIn([Role.USER, Role.ADMIN]),
   ],
   AuthService.hasRole({ roles: [Role.ADMIN] }),
   async (
     req: TypedRequest<
       {
+        id: string;
         username: string;
         email: string;
         language: string;
-        roles?: number[];
+        role: string;
       },
       {}
     >,
     res: Response
   ) => {
-    const { username, email, language, roles, prisma, user } = req.body;
-    const { id } = user!;
+    const { id, username, email, language, role, prisma } = req.body;
     const userService = new UserService(prisma);
 
     let updatedUser;
+
     try {
       updatedUser = await userService.updateUser({
-        id,
+        id: parseInt(id),
         username,
         email,
         language,
-        roles,
+        role,
       });
       updatedUser = AuthService.safeUser({ user: updatedUser });
     } catch (error) {
@@ -65,8 +66,7 @@ router.put(
     body("username").isString().isLength({ min: 3 }).optional(),
     body("email").isEmail().optional(),
     body("language").isString().isLength({ min: 5, max: 5 }).optional(),
-    body("roles").optional().isArray(),
-    body("roles.*").isNumeric(),
+    body("role").optional(),
   ],
   AuthService.hasRole({ roles: [Role.USER] }),
   async (
@@ -75,13 +75,13 @@ router.put(
         username: string;
         email: string;
         language: string;
-        roles?: number[];
+        role: string;
       },
       {}
     >,
     res: Response
   ) => {
-    const { username, email, language, roles, prisma, user } = req.body;
+    const { username, email, language, role, prisma, user } = req.body;
     const { id } = user!;
     const userService = new UserService(prisma);
 
@@ -92,7 +92,7 @@ router.put(
         username,
         email,
         language,
-        roles,
+        role,
       });
       updatedUser = AuthService.safeUser({ user: updatedUser });
     } catch (error) {

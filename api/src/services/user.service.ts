@@ -53,13 +53,13 @@ export class UserService {
     username,
     email,
     language,
-    roles,
+    role,
   }: {
     id: number | undefined;
     username?: string;
     email?: string;
     language?: string;
-    roles?: number[];
+    role: string;
   }) {
     if (!id) {
       throw new Error("User ID is required");
@@ -71,11 +71,7 @@ export class UserService {
         username,
         email,
         language,
-        ...(roles && {
-          roles: {
-            set: roles.map((roleId) => ({ id: roleId })),
-          },
-        }),
+        role: Role[role as keyof typeof Role],
       },
     });
   }
