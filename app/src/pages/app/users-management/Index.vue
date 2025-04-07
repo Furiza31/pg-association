@@ -17,12 +17,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { toast } from "@/components/ui/toast";
 import { useAPI } from "@/services/API.service";
 import { useTranslation } from "@/services/translation.service";
 import { UserType } from "@/types/UserType";
 import { Loader } from "lucide-vue-next";
 import { onMounted, ref } from "vue";
+import { toast } from "vue-sonner";
 import { columns } from "../../../components/users-management/columns";
 import UsersDataTable from "../../../components/users-management/data-table.vue";
 
@@ -52,18 +52,10 @@ const fetchUsers = async () => {
     if (response.status === 200) {
       users.value = response.data.users;
     } else {
-      toast({
-        title: "Error",
-        description: response.message || "Failed to fetch users",
-        variant: "destructive",
-      });
+      toast.error(response.message || "Failed to fetch users");
     }
   } catch (error) {
-    toast({
-      title: "Error",
-      description: "An error occurred while fetching users",
-      variant: "destructive",
-    });
+    toast.error("An error occurred while fetching users");
   } finally {
     loading.value = false;
   }
@@ -94,11 +86,7 @@ const openEditDialog = (user: UserType) => {
 const createUser = async () => {
   try {
     if (password.value !== confirmPassword.value) {
-      toast({
-        title: "Error",
-        description: "Passwords do not match",
-        variant: "destructive",
-      });
+      toast.error("Passwords do not match");
       return;
     }
 
@@ -110,25 +98,14 @@ const createUser = async () => {
     });
 
     if (response.status === 201) {
-      toast({
-        title: "Success",
-        description: "User created successfully",
-      });
+      toast.success("User created successfully");
       dialogOpen.value = false;
       await fetchUsers();
     } else {
-      toast({
-        title: "Error",
-        description: response.message || "Failed to create user",
-        variant: "destructive",
-      });
+      toast.error(response.message || "Failed to create user");
     }
   } catch (error) {
-    toast({
-      title: "Error",
-      description: "An error occurred while creating user",
-      variant: "destructive",
-    });
+    toast.error("An error occurred while creating user");
   }
 };
 
@@ -137,59 +114,39 @@ const updateUser = async () => {
 
   try {
     const userData = {
+      id: editingUser.value.id,
       username: username.value,
       email: email.value,
       language: language.value,
+      role: role.value,
     };
 
     const response = await api.put("/user", userData);
 
     if (response.status === 200) {
-      toast({
-        title: "Success",
-        description: "User updated successfully",
-      });
+      toast.success("User updated successfully");
       dialogOpen.value = false;
       await fetchUsers();
     } else {
-      toast({
-        title: "Error",
-        description: response.message || "Failed to update user",
-        variant: "destructive",
-      });
+      toast.error(response.message || "Failed to update user");
     }
   } catch (error) {
-    toast({
-      title: "Error",
-      description: "An error occurred while updating user",
-      variant: "destructive",
-    });
+    toast.error("An error occurred while updating user");
   }
 };
 
 const deleteUser = async (userId: number) => {
   try {
-    const response = await api.post("/user", { userId });
+    const response = await api.delete("/user/" + userId);
 
     if (response.status === 200) {
-      toast({
-        title: "Success",
-        description: "User deleted successfully",
-      });
+      toast.success("User deleted successfully");
       await fetchUsers();
     } else {
-      toast({
-        title: "Error",
-        description: response.message || "Failed to delete user",
-        variant: "destructive",
-      });
+      toast.error(response.message || "Failed to delete user");
     }
   } catch (error) {
-    toast({
-      title: "Error",
-      description: "An error occurred while deleting user",
-      variant: "destructive",
-    });
+    toast.error("An error occurred while deleting user check your network");
   }
 };
 
@@ -247,7 +204,7 @@ const handleSubmit = () => {
                 </Select>
               </div>
 
-              <div class="grid gap-2">
+              <div class="grid gap-2" v-if="editingUser">
                 <Label for="role">{{ t("Role") }}</Label>
                 <Select v-model="role">
                   <SelectTrigger>
