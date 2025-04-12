@@ -18,6 +18,7 @@ import {
   LayoutDashboard,
   LogOut,
   Menu,
+  MessageSquare,
   Settings,
   Users,
 } from "lucide-vue-next";
@@ -80,6 +81,18 @@ watch(
             >
               <LayoutDashboard class="size-5" />
               <span class="w-5/6 text-center"> {{ t("Home") }} </span>
+            </Button>
+          </RouterLink>
+          <RouterLink
+            :to="{ name: 'Chat' }"
+            exactActiveClass="group active"
+            class="w-full"
+          >
+            <Button
+              class="flex flex-row items-center justify-start w-full px-2 py-1 h-9 bg-secondary-foreground group-[.active]:bg-primary"
+            >
+              <MessageSquare class="size-5" />
+              <span class="w-5/6 text-center"> {{ t("Chat") }} </span>
             </Button>
           </RouterLink>
           <div

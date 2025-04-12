@@ -48,6 +48,11 @@ export const routes: Array<RouteRecordRaw> = [
         component: () => import("@/pages/app/settings/Language.vue"),
       },
       {
+        path: "chat",
+        name: "Chat",
+        component: () => import("@/pages/app/chat/Index.vue"),
+      },
+      {
         path: "users-management",
         name: "Users_Management",
         component: () => import("@/pages/app/users-management/Index.vue"),

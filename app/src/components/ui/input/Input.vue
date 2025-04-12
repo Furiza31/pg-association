@@ -36,7 +36,7 @@ const togglePassword = () => {
 </script>
 
 <template>
-  <div class="relative flex items-center">
+  <div class="relative flex items-center w-full">
     <input
       v-model="modelValue"
       :type="inputType"

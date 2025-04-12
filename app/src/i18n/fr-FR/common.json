@@ -68,5 +68,15 @@
   "Edit_User_Description": "Modifiez les détails de l'utilisateur ci-dessous.",
   "Create_User_Description": "Créez un nouvel utilisateur en remplissant le formulaire ci-dessous.",
   "Role": "Rôle",
-  "Select_Role": "Sélectionner le rôle"
+  "Select_Role": "Sélectionner le rôle",
+  "Chat": "Discussion",
+  "Type_Message": "Écrivez un message...",
+  "Send": "Envoyer",
+  "Connected": "Connecté",
+  "Disconnected": "Déconnecté",
+  "No_Messages": "Pas encore de messages. Commencez la conversation !",
+  "Select_Room": "Sélectionnez un salon",
+  "General": "Général",
+  "Support": "Support",
+  "Random": "Divers"
 }
